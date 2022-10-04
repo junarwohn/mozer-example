@@ -12,7 +12,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import cv2
 import time
 import random
-from mozer.model_tuner.UNet_v1 import UNet
+from mozer.model_tuner.UNet_v2 import UNet
 
 batch_size = 4
 # img_size = (512, 512)
