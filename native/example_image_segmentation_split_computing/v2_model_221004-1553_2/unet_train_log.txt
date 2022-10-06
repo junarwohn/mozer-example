@@ -1,0 +1,377 @@
+Found 483 images belonging to 1 classes.
+Found 161 images belonging to 1 classes.
+Found 483 images belonging to 1 classes.
+Found 161 images belonging to 1 classes.
+############################
+[2, 0, 0, 0]
+############################
+Epoch 1/50
+120/120 - 42s - loss: 0.4620 - binary_crossentropy: 0.4620 - val_loss: 1.1422 - val_binary_crossentropy: 1.1422
+
+Epoch 00001: binary_crossentropy improved from inf to 0.46203, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 2/50
+120/120 - 38s - loss: 0.2073 - binary_crossentropy: 0.2073 - val_loss: 1.2960 - val_binary_crossentropy: 1.2960
+
+Epoch 00002: binary_crossentropy improved from 0.46203 to 0.20734, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 3/50
+120/120 - 36s - loss: 0.1180 - binary_crossentropy: 0.1180 - val_loss: 0.2997 - val_binary_crossentropy: 0.2997
+
+Epoch 00003: binary_crossentropy improved from 0.20734 to 0.11802, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 4/50
+120/120 - 36s - loss: 0.0801 - binary_crossentropy: 0.0801 - val_loss: 0.0948 - val_binary_crossentropy: 0.0948
+
+Epoch 00004: binary_crossentropy improved from 0.11802 to 0.08013, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 5/50
+120/120 - 36s - loss: 0.1327 - binary_crossentropy: 0.1327 - val_loss: 0.8999 - val_binary_crossentropy: 0.8999
+
+Epoch 00005: binary_crossentropy did not improve from 0.08013
+Epoch 6/50
+120/120 - 36s - loss: 0.0682 - binary_crossentropy: 0.0682 - val_loss: 0.0734 - val_binary_crossentropy: 0.0734
+
+Epoch 00006: binary_crossentropy improved from 0.08013 to 0.06825, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 7/50
+120/120 - 36s - loss: 0.0483 - binary_crossentropy: 0.0483 - val_loss: 0.0606 - val_binary_crossentropy: 0.0606
+
+Epoch 00007: binary_crossentropy improved from 0.06825 to 0.04825, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 8/50
+120/120 - 36s - loss: 0.0399 - binary_crossentropy: 0.0399 - val_loss: 0.0502 - val_binary_crossentropy: 0.0502
+
+Epoch 00008: binary_crossentropy improved from 0.04825 to 0.03994, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 9/50
+120/120 - 36s - loss: 0.0372 - binary_crossentropy: 0.0372 - val_loss: 0.0531 - val_binary_crossentropy: 0.0531
+
+Epoch 00009: binary_crossentropy improved from 0.03994 to 0.03719, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 10/50
+120/120 - 36s - loss: 0.0309 - binary_crossentropy: 0.0309 - val_loss: 0.0382 - val_binary_crossentropy: 0.0382
+
+Epoch 00010: binary_crossentropy improved from 0.03719 to 0.03087, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 11/50
+120/120 - 36s - loss: 0.0301 - binary_crossentropy: 0.0301 - val_loss: 0.0395 - val_binary_crossentropy: 0.0395
+
+Epoch 00011: binary_crossentropy improved from 0.03087 to 0.03005, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 12/50
+120/120 - 36s - loss: 0.0324 - binary_crossentropy: 0.0324 - val_loss: 0.0456 - val_binary_crossentropy: 0.0456
+
+Epoch 00012: binary_crossentropy did not improve from 0.03005
+Epoch 13/50
+120/120 - 36s - loss: 0.0255 - binary_crossentropy: 0.0255 - val_loss: 0.0388 - val_binary_crossentropy: 0.0388
+
+Epoch 00013: binary_crossentropy improved from 0.03005 to 0.02554, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 14/50
+120/120 - 36s - loss: 0.0221 - binary_crossentropy: 0.0221 - val_loss: 0.0368 - val_binary_crossentropy: 0.0368
+
+Epoch 00014: binary_crossentropy improved from 0.02554 to 0.02213, saving model to ./UNet_M[2-0-0-0].h5
+Epoch 15/50
+120/120 - 36s - loss: 0.0480 - binary_crossentropy: 0.0480 - val_loss: 16.6375 - val_binary_crossentropy: 16.6375
+
+Epoch 00015: binary_crossentropy did not improve from 0.02213
+Epoch 16/50
+120/120 - 36s - loss: 0.1754 - binary_crossentropy: 0.1754 - val_loss: 70.6464 - val_binary_crossentropy: 70.6464
+
+Epoch 00016: binary_crossentropy did not improve from 0.02213
+Epoch 17/50
+120/120 - 36s - loss: 0.0598 - binary_crossentropy: 0.0598 - val_loss: 0.0877 - val_binary_crossentropy: 0.0877
+
+Epoch 00017: binary_crossentropy did not improve from 0.02213
+Epoch 18/50
+120/120 - 36s - loss: 0.0519 - binary_crossentropy: 0.0519 - val_loss: 0.0584 - val_binary_crossentropy: 0.0584
+
+Epoch 00018: binary_crossentropy did not improve from 0.02213
+Epoch 19/50
+120/120 - 36s - loss: 0.0433 - binary_crossentropy: 0.0433 - val_loss: 0.0452 - val_binary_crossentropy: 0.0452
+
+Epoch 00019: binary_crossentropy did not improve from 0.02213
+############################
+[1, 0, 0, 0]
+############################
+Epoch 1/50
+120/120 - 38s - loss: 0.4696 - binary_crossentropy: 0.4696 - val_loss: 7.1687 - val_binary_crossentropy: 7.1687
+
+Epoch 00001: binary_crossentropy improved from inf to 0.46961, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 2/50
+120/120 - 36s - loss: 0.2069 - binary_crossentropy: 0.2069 - val_loss: 0.2019 - val_binary_crossentropy: 0.2019
+
+Epoch 00002: binary_crossentropy improved from 0.46961 to 0.20687, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 3/50
+120/120 - 36s - loss: 0.1165 - binary_crossentropy: 0.1165 - val_loss: 0.1593 - val_binary_crossentropy: 0.1593
+
+Epoch 00003: binary_crossentropy improved from 0.20687 to 0.11648, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 4/50
+120/120 - 36s - loss: 0.1279 - binary_crossentropy: 0.1279 - val_loss: 6.3965 - val_binary_crossentropy: 6.3965
+
+Epoch 00004: binary_crossentropy did not improve from 0.11648
+Epoch 5/50
+120/120 - 36s - loss: 0.1152 - binary_crossentropy: 0.1152 - val_loss: 0.2190 - val_binary_crossentropy: 0.2190
+
+Epoch 00005: binary_crossentropy improved from 0.11648 to 0.11519, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 6/50
+120/120 - 36s - loss: 0.0811 - binary_crossentropy: 0.0811 - val_loss: 0.1765 - val_binary_crossentropy: 0.1765
+
+Epoch 00006: binary_crossentropy improved from 0.11519 to 0.08107, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 7/50
+120/120 - 36s - loss: 0.0670 - binary_crossentropy: 0.0670 - val_loss: 0.0889 - val_binary_crossentropy: 0.0889
+
+Epoch 00007: binary_crossentropy improved from 0.08107 to 0.06702, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 8/50
+120/120 - 36s - loss: 0.0552 - binary_crossentropy: 0.0552 - val_loss: 0.0695 - val_binary_crossentropy: 0.0695
+
+Epoch 00008: binary_crossentropy improved from 0.06702 to 0.05518, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 9/50
+120/120 - 36s - loss: 0.0419 - binary_crossentropy: 0.0419 - val_loss: 0.0604 - val_binary_crossentropy: 0.0604
+
+Epoch 00009: binary_crossentropy improved from 0.05518 to 0.04194, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 10/50
+120/120 - 36s - loss: 0.0558 - binary_crossentropy: 0.0558 - val_loss: 0.0577 - val_binary_crossentropy: 0.0577
+
+Epoch 00010: binary_crossentropy did not improve from 0.04194
+Epoch 11/50
+120/120 - 36s - loss: 0.0385 - binary_crossentropy: 0.0385 - val_loss: 0.0484 - val_binary_crossentropy: 0.0484
+
+Epoch 00011: binary_crossentropy improved from 0.04194 to 0.03854, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 12/50
+120/120 - 36s - loss: 0.0556 - binary_crossentropy: 0.0556 - val_loss: 0.1077 - val_binary_crossentropy: 0.1077
+
+Epoch 00012: binary_crossentropy did not improve from 0.03854
+Epoch 13/50
+120/120 - 36s - loss: 0.0547 - binary_crossentropy: 0.0547 - val_loss: 0.0479 - val_binary_crossentropy: 0.0479
+
+Epoch 00013: binary_crossentropy did not improve from 0.03854
+Epoch 14/50
+120/120 - 36s - loss: 0.0414 - binary_crossentropy: 0.0414 - val_loss: 0.0403 - val_binary_crossentropy: 0.0403
+
+Epoch 00014: binary_crossentropy did not improve from 0.03854
+Epoch 15/50
+120/120 - 36s - loss: 0.0319 - binary_crossentropy: 0.0319 - val_loss: 0.0402 - val_binary_crossentropy: 0.0402
+
+Epoch 00015: binary_crossentropy improved from 0.03854 to 0.03193, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 16/50
+120/120 - 36s - loss: 0.0304 - binary_crossentropy: 0.0304 - val_loss: 0.0361 - val_binary_crossentropy: 0.0361
+
+Epoch 00016: binary_crossentropy improved from 0.03193 to 0.03043, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 17/50
+120/120 - 36s - loss: 0.0267 - binary_crossentropy: 0.0267 - val_loss: 0.0440 - val_binary_crossentropy: 0.0440
+
+Epoch 00017: binary_crossentropy improved from 0.03043 to 0.02667, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 18/50
+120/120 - 36s - loss: 0.0241 - binary_crossentropy: 0.0241 - val_loss: 0.0349 - val_binary_crossentropy: 0.0349
+
+Epoch 00018: binary_crossentropy improved from 0.02667 to 0.02406, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 19/50
+120/120 - 36s - loss: 0.0272 - binary_crossentropy: 0.0272 - val_loss: 0.0362 - val_binary_crossentropy: 0.0362
+
+Epoch 00019: binary_crossentropy did not improve from 0.02406
+Epoch 20/50
+120/120 - 35s - loss: 0.0226 - binary_crossentropy: 0.0226 - val_loss: 0.0406 - val_binary_crossentropy: 0.0406
+
+Epoch 00020: binary_crossentropy improved from 0.02406 to 0.02265, saving model to ./UNet_M[1-0-0-0].h5
+Epoch 21/50
+120/120 - 36s - loss: 0.0229 - binary_crossentropy: 0.0229 - val_loss: 0.0377 - val_binary_crossentropy: 0.0377
+
+Epoch 00021: binary_crossentropy did not improve from 0.02265
+Epoch 22/50
+120/120 - 36s - loss: 0.0335 - binary_crossentropy: 0.0335 - val_loss: 4.6644 - val_binary_crossentropy: 4.6644
+
+Epoch 00022: binary_crossentropy did not improve from 0.02265
+Epoch 23/50
+120/120 - 36s - loss: 0.0734 - binary_crossentropy: 0.0734 - val_loss: 3.8506 - val_binary_crossentropy: 3.8506
+
+Epoch 00023: binary_crossentropy did not improve from 0.02265
+Epoch 24/50
+120/120 - 36s - loss: 0.0442 - binary_crossentropy: 0.0442 - val_loss: 0.0511 - val_binary_crossentropy: 0.0511
+
+Epoch 00024: binary_crossentropy did not improve from 0.02265
+Epoch 25/50
+120/120 - 36s - loss: 0.0368 - binary_crossentropy: 0.0368 - val_loss: 0.0473 - val_binary_crossentropy: 0.0473
+
+Epoch 00025: binary_crossentropy did not improve from 0.02265
+############################
+[0, 0, 0, 0]
+############################
+Epoch 1/50
+120/120 - 38s - loss: 0.4187 - binary_crossentropy: 0.4187 - val_loss: 6.0049 - val_binary_crossentropy: 6.0049
+
+Epoch 00001: binary_crossentropy improved from inf to 0.41867, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 2/50
+120/120 - 36s - loss: 0.1889 - binary_crossentropy: 0.1889 - val_loss: 0.2926 - val_binary_crossentropy: 0.2926
+
+Epoch 00002: binary_crossentropy improved from 0.41867 to 0.18895, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 3/50
+120/120 - 36s - loss: 0.1204 - binary_crossentropy: 0.1204 - val_loss: 0.1270 - val_binary_crossentropy: 0.1270
+
+Epoch 00003: binary_crossentropy improved from 0.18895 to 0.12044, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 4/50
+120/120 - 36s - loss: 0.0925 - binary_crossentropy: 0.0925 - val_loss: 0.1270 - val_binary_crossentropy: 0.1270
+
+Epoch 00004: binary_crossentropy improved from 0.12044 to 0.09252, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 5/50
+120/120 - 36s - loss: 0.1149 - binary_crossentropy: 0.1149 - val_loss: 12.4614 - val_binary_crossentropy: 12.4614
+
+Epoch 00005: binary_crossentropy did not improve from 0.09252
+Epoch 6/50
+120/120 - 36s - loss: 0.0698 - binary_crossentropy: 0.0698 - val_loss: 0.1113 - val_binary_crossentropy: 0.1113
+
+Epoch 00006: binary_crossentropy improved from 0.09252 to 0.06976, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 7/50
+120/120 - 36s - loss: 0.0636 - binary_crossentropy: 0.0636 - val_loss: 0.1321 - val_binary_crossentropy: 0.1321
+
+Epoch 00007: binary_crossentropy improved from 0.06976 to 0.06365, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 8/50
+120/120 - 36s - loss: 0.0549 - binary_crossentropy: 0.0549 - val_loss: 0.0539 - val_binary_crossentropy: 0.0539
+
+Epoch 00008: binary_crossentropy improved from 0.06365 to 0.05493, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 9/50
+120/120 - 36s - loss: 0.0647 - binary_crossentropy: 0.0647 - val_loss: 0.0924 - val_binary_crossentropy: 0.0924
+
+Epoch 00009: binary_crossentropy did not improve from 0.05493
+Epoch 10/50
+120/120 - 36s - loss: 0.0479 - binary_crossentropy: 0.0479 - val_loss: 0.0516 - val_binary_crossentropy: 0.0516
+
+Epoch 00010: binary_crossentropy improved from 0.05493 to 0.04790, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 11/50
+120/120 - 36s - loss: 0.0400 - binary_crossentropy: 0.0400 - val_loss: 0.0459 - val_binary_crossentropy: 0.0459
+
+Epoch 00011: binary_crossentropy improved from 0.04790 to 0.04004, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 12/50
+120/120 - 36s - loss: 0.0336 - binary_crossentropy: 0.0336 - val_loss: 0.0573 - val_binary_crossentropy: 0.0573
+
+Epoch 00012: binary_crossentropy improved from 0.04004 to 0.03361, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 13/50
+120/120 - 36s - loss: 0.0577 - binary_crossentropy: 0.0577 - val_loss: 46.5255 - val_binary_crossentropy: 46.5255
+
+Epoch 00013: binary_crossentropy did not improve from 0.03361
+Epoch 14/50
+120/120 - 36s - loss: 0.0649 - binary_crossentropy: 0.0649 - val_loss: 0.1336 - val_binary_crossentropy: 0.1336
+
+Epoch 00014: binary_crossentropy did not improve from 0.03361
+Epoch 15/50
+120/120 - 36s - loss: 0.0399 - binary_crossentropy: 0.0399 - val_loss: 0.0507 - val_binary_crossentropy: 0.0507
+
+Epoch 00015: binary_crossentropy did not improve from 0.03361
+Epoch 16/50
+120/120 - 36s - loss: 0.0341 - binary_crossentropy: 0.0341 - val_loss: 0.0458 - val_binary_crossentropy: 0.0458
+
+Epoch 00016: binary_crossentropy did not improve from 0.03361
+Epoch 17/50
+120/120 - 36s - loss: 0.0288 - binary_crossentropy: 0.0288 - val_loss: 0.0354 - val_binary_crossentropy: 0.0354
+
+Epoch 00017: binary_crossentropy improved from 0.03361 to 0.02876, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 18/50
+120/120 - 36s - loss: 0.0286 - binary_crossentropy: 0.0286 - val_loss: 0.0452 - val_binary_crossentropy: 0.0452
+
+Epoch 00018: binary_crossentropy improved from 0.02876 to 0.02864, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 19/50
+120/120 - 36s - loss: 0.0266 - binary_crossentropy: 0.0266 - val_loss: 0.0445 - val_binary_crossentropy: 0.0445
+
+Epoch 00019: binary_crossentropy improved from 0.02864 to 0.02655, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 20/50
+120/120 - 36s - loss: 0.0233 - binary_crossentropy: 0.0233 - val_loss: 0.0344 - val_binary_crossentropy: 0.0344
+
+Epoch 00020: binary_crossentropy improved from 0.02655 to 0.02330, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 21/50
+120/120 - 36s - loss: 0.0219 - binary_crossentropy: 0.0219 - val_loss: 0.0388 - val_binary_crossentropy: 0.0388
+
+Epoch 00021: binary_crossentropy improved from 0.02330 to 0.02188, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 22/50
+120/120 - 35s - loss: 0.0206 - binary_crossentropy: 0.0206 - val_loss: 0.0454 - val_binary_crossentropy: 0.0454
+
+Epoch 00022: binary_crossentropy improved from 0.02188 to 0.02065, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 23/50
+120/120 - 36s - loss: 0.0194 - binary_crossentropy: 0.0194 - val_loss: 0.0287 - val_binary_crossentropy: 0.0287
+
+Epoch 00023: binary_crossentropy improved from 0.02065 to 0.01941, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 24/50
+120/120 - 36s - loss: 0.0192 - binary_crossentropy: 0.0192 - val_loss: 0.0362 - val_binary_crossentropy: 0.0362
+
+Epoch 00024: binary_crossentropy improved from 0.01941 to 0.01918, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 25/50
+120/120 - 36s - loss: 0.0209 - binary_crossentropy: 0.0209 - val_loss: 0.0447 - val_binary_crossentropy: 0.0447
+
+Epoch 00025: binary_crossentropy did not improve from 0.01918
+Epoch 26/50
+120/120 - 36s - loss: 0.0198 - binary_crossentropy: 0.0198 - val_loss: 0.0491 - val_binary_crossentropy: 0.0491
+
+Epoch 00026: binary_crossentropy did not improve from 0.01918
+Epoch 27/50
+120/120 - 36s - loss: 0.0170 - binary_crossentropy: 0.0170 - val_loss: 0.0456 - val_binary_crossentropy: 0.0456
+
+Epoch 00027: binary_crossentropy improved from 0.01918 to 0.01698, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 28/50
+120/120 - 36s - loss: 0.0160 - binary_crossentropy: 0.0160 - val_loss: 0.0319 - val_binary_crossentropy: 0.0319
+
+Epoch 00028: binary_crossentropy improved from 0.01698 to 0.01597, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 29/50
+120/120 - 36s - loss: 0.0166 - binary_crossentropy: 0.0166 - val_loss: 0.0343 - val_binary_crossentropy: 0.0343
+
+Epoch 00029: binary_crossentropy did not improve from 0.01597
+Epoch 30/50
+120/120 - 36s - loss: 0.0148 - binary_crossentropy: 0.0148 - val_loss: 0.0474 - val_binary_crossentropy: 0.0474
+
+Epoch 00030: binary_crossentropy improved from 0.01597 to 0.01475, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 31/50
+120/120 - 36s - loss: 0.0173 - binary_crossentropy: 0.0173 - val_loss: 0.0327 - val_binary_crossentropy: 0.0327
+
+Epoch 00031: binary_crossentropy did not improve from 0.01475
+Epoch 32/50
+120/120 - 36s - loss: 0.0151 - binary_crossentropy: 0.0151 - val_loss: 0.0405 - val_binary_crossentropy: 0.0405
+
+Epoch 00032: binary_crossentropy did not improve from 0.01475
+Epoch 33/50
+120/120 - 36s - loss: 0.0153 - binary_crossentropy: 0.0153 - val_loss: 0.0361 - val_binary_crossentropy: 0.0361
+
+Epoch 00033: binary_crossentropy did not improve from 0.01475
+Epoch 34/50
+120/120 - 36s - loss: 0.0142 - binary_crossentropy: 0.0142 - val_loss: 0.0399 - val_binary_crossentropy: 0.0399
+
+Epoch 00034: binary_crossentropy improved from 0.01475 to 0.01420, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 35/50
+120/120 - 36s - loss: 0.0239 - binary_crossentropy: 0.0239 - val_loss: 1.4355 - val_binary_crossentropy: 1.4355
+
+Epoch 00035: binary_crossentropy did not improve from 0.01420
+Epoch 36/50
+120/120 - 36s - loss: 0.0241 - binary_crossentropy: 0.0241 - val_loss: 0.0424 - val_binary_crossentropy: 0.0424
+
+Epoch 00036: binary_crossentropy did not improve from 0.01420
+Epoch 37/50
+120/120 - 36s - loss: 0.0188 - binary_crossentropy: 0.0188 - val_loss: 0.0371 - val_binary_crossentropy: 0.0371
+
+Epoch 00037: binary_crossentropy did not improve from 0.01420
+Epoch 38/50
+120/120 - 36s - loss: 0.0147 - binary_crossentropy: 0.0147 - val_loss: 0.0487 - val_binary_crossentropy: 0.0487
+
+Epoch 00038: binary_crossentropy did not improve from 0.01420
+Epoch 39/50
+120/120 - 36s - loss: 0.0139 - binary_crossentropy: 0.0139 - val_loss: 0.0365 - val_binary_crossentropy: 0.0365
+
+Epoch 00039: binary_crossentropy improved from 0.01420 to 0.01390, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 40/50
+120/120 - 36s - loss: 0.0143 - binary_crossentropy: 0.0143 - val_loss: 0.0435 - val_binary_crossentropy: 0.0435
+
+Epoch 00040: binary_crossentropy did not improve from 0.01390
+Epoch 41/50
+120/120 - 36s - loss: 0.0132 - binary_crossentropy: 0.0132 - val_loss: 0.0373 - val_binary_crossentropy: 0.0373
+
+Epoch 00041: binary_crossentropy improved from 0.01390 to 0.01322, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 42/50
+120/120 - 36s - loss: 0.0126 - binary_crossentropy: 0.0126 - val_loss: 0.0332 - val_binary_crossentropy: 0.0332
+
+Epoch 00042: binary_crossentropy improved from 0.01322 to 0.01265, saving model to ./UNet_M[0-0-0-0].h5
+Epoch 43/50
+120/120 - 36s - loss: 0.0627 - binary_crossentropy: 0.0627 - val_loss: 1535.0323 - val_binary_crossentropy: 1535.0323
+
+Epoch 00043: binary_crossentropy did not improve from 0.01265
+Epoch 44/50
+120/120 - 36s - loss: 0.0751 - binary_crossentropy: 0.0751 - val_loss: 3.7396 - val_binary_crossentropy: 3.7396
+
+Epoch 00044: binary_crossentropy did not improve from 0.01265
+Epoch 45/50
+120/120 - 36s - loss: 0.0391 - binary_crossentropy: 0.0391 - val_loss: 0.0446 - val_binary_crossentropy: 0.0446
+
+Epoch 00045: binary_crossentropy did not improve from 0.01265
+Epoch 46/50
+120/120 - 36s - loss: 0.0368 - binary_crossentropy: 0.0368 - val_loss: 0.0608 - val_binary_crossentropy: 0.0608
+
+Epoch 00046: binary_crossentropy did not improve from 0.01265
+Epoch 47/50
+120/120 - 36s - loss: 0.0264 - binary_crossentropy: 0.0264 - val_loss: 0.0521 - val_binary_crossentropy: 0.0521
+
+Epoch 00047: binary_crossentropy did not improve from 0.01265

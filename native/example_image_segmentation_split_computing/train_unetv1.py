@@ -76,7 +76,7 @@ combinations = combinations + [[0,0,0,0]]
 # flag = False
 
 combinations = [[i, 0, 0, 0] for i in range(3)]
-for com in combinations[::-1]:
+for com in combinations:
     print("############################")
     print(com)
     print("############################")
@@ -104,7 +104,9 @@ for com in combinations[::-1]:
     model.compile(optimizer=tf.keras.optimizers.Adam(lr=1e-4), loss=tf.keras.losses.BinaryCrossentropy(from_logits=True), metrics=['binary_crossentropy'])
     # model.fit(data_generator_train, epochs=10, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=10, verbose=2)
     # model.fit(data_generator_train, epochs=10, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=10, verbose=2)
-    model.fit(data_generator_train, epochs=50, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=50, verbose=2)
+    model.fit(data_generator_train, epochs=50, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=50)
+    # model.fit(data_generator_train, epochs=50, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=50, verbose=2)
+    # model.fit(data_generator_train, epochs=50, steps_per_epoch=len(x_train)-1, callbacks=[checkpoint, early_stop], validation_data=data_generator_validation, validation_steps=50)
     # model.fit(data_generator_train, epochs=10, steps_per_epoch=len(x_train)-1, callbacks=[early_stop], validation_data=data_generator_validation, validation_steps=10, verbose=2)
     # model.save(model_file_name)
     tf.keras.backend.clear_session()
