@@ -252,3 +252,4 @@ cython_debug/
 **/*.h5
 **/*.so
 **/*.params
+**/*.npy
