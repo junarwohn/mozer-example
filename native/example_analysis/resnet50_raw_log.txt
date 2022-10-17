@@ -1,0 +1,19 @@
+[0, 7, 23, 35, 47, 63, 75, 87, 99, 115, 127, 139, 151, 163, 175, 191, 203, 215, 221]
+original size 606112 inference 0.00255279849
+communication size 806816 inference 0.002555129
+communication size 3215264 inference 0.0025578396000000003
+communication size 3215264 inference 0.00257118749
+communication size 3215264 inference 0.0025686733600000003
+communication size 1609632 inference 0.0025630979299999996
+communication size 1609632 inference 0.00256495304
+communication size 1609632 inference 0.00256639463
+communication size 1609632 inference 0.00255904875
+communication size 806816 inference 0.00255823488
+communication size 806816 inference 0.0025590490399999997
+communication size 806816 inference 0.00255914851
+communication size 806816 inference 0.0025608537
+communication size 806816 inference 0.0025588176699999996
+communication size 806816 inference 0.0025577076899999996
+communication size 405408 inference 0.0025590951599999997
+communication size 405408 inference 0.0025586140100000002
+communication size 405408 inference 0.0025570676399999993

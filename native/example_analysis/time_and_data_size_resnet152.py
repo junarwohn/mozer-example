@@ -500,7 +500,8 @@ def get_time(lib, dev, loaded_params, input_idxs, output_idxs, graph_json_strs, 
         for i, oi in enumerate(output_idx):
             get_output_time += model.module.time_evaluator(func_name='get_output', dev=dev, number=total_frames)(i).results[0]
         
-    return set_input_time + run_time + get_output_time
+    # return set_input_time + run_time + get_output_time
+    return set_input_time, run_time, get_output_time
 
 def get_size(dummy):
     dsz = 99999999999
@@ -613,15 +614,23 @@ for candidate in candidates1 + candidates2:
     # print(partition_points)
     communication_size = 0
     inference_time = 0
-
+    total_sit, total_rt, total_got = (0,0,0)
+    print(partition_points, end='')
     # Solo
     if len(input_idxs) == 1:
         front_input_idxs, front_output_idxs, front_graph_json_strs, front_dummy_inputs = get_model_info(partition_points[:2])
         total_front_output_idxs = []
         for i in front_output_idxs:
             total_front_output_idxs += i
-        inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
-        print("original size", original_size, "inference", inference_time)
+
+        # inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        sit, rt, got = get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        total_sit += sit
+        total_rt += rt
+        total_got += got
+        # print("original size", original_size, "inference", inference_time)
+        total = total_sit + total_rt + total_got
+        print(f"set_input : {total_sit:.6f}, run : {total_rt:.6f}, get_output : {total_got:.6f}, total : {total:.6f}")
         continue
 
     if len(input_idxs) == 2:
@@ -656,7 +665,13 @@ for candidate in candidates1 + candidates2:
         
         # print(communication_size + get_size(raw_output_dummy))
         communication_size += get_size(raw_output_dummy)
-        inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        # inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        sit, rt, got = get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        total_sit += sit
+        total_rt += rt
+        total_got += got
+
+
 
     # Middle
     if len(input_idxs) == 3:
@@ -703,6 +718,12 @@ for candidate in candidates1 + candidates2:
             # total_network_time += network_simulator(msg_size, 'wifi')
             communication_size += get_size(input_dummys[idx])
 
-        inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        # inference_time += get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        sit, rt, got = get_time(lib.get_lib(), dev, tvm.runtime.save_param_dict(lib.get_params()), input_idxs, output_idxs, graph_json_strs, dummy_inputs)
+        total_sit += sit
+        total_rt += rt
+        total_got += got
 
-    print("communication size", communication_size, "inference", inference_time)
+    # print("communication size", communication_size, "inference", inference_time)
+    total = total_sit + total_rt + total_got
+    print(f"set_input : {total_sit:.6f}, run : {total_rt:.6f}, get_output : {total_got:.6f}, total : {total:.6f}")

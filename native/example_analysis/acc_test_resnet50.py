@@ -681,6 +681,7 @@ def show_graph(json_data, file_name=None):
 def acc_test(lib, dev, loaded_params, input_idxs, output_idxs, graph_json_strs):
     data_path = os.environ['TS_DATA_PATH'] + "VOC_data"
     file_list = sorted(os.listdir(data_path))
+    logs = []
     for input_idx, output_idx, graph_json_str in zip(input_idxs, output_idxs, graph_json_strs):
         model = graph_executor.create(graph_json_str, lib, dev)
         model.load_params(loaded_params)
@@ -695,7 +696,8 @@ def acc_test(lib, dev, loaded_params, input_idxs, output_idxs, graph_json_strs):
             # tvm_out = model.set_input(tvm.nd.array(data.astype(dtype)))
             tvm_out = model.get_output(0).numpy()[0]
             top1_tvm = np.argmax(tvm_out)
-            print(top1_tvm)
+            logs.append(top1_tvm)
+    np.save("./voc_resnet50_q2.npy", np.array(logs))
 
 
 # def acc_test(lib, dev, loaded_params, input_idxs, output_idxs, graph_json_strs):
