@@ -1,3 +1,5 @@
+import os
+# os.environ["CUDA_VISIBLE_DEVICES"]="1"
 import socket
 import pickle
 # import cloudpickle as pickle
@@ -15,8 +17,6 @@ import struct
 from argparse import ArgumentParser
 import ntplib 
 from multiprocessing import Process, Queue
-import os
-
 ntp_time_server = 'time.windows.com'               # NTP Server Domain Or IP 
 ntp_time_server = 'time.google.com'               # NTP Server Domain Or IP 
 g_ntp_client = ntplib.NTPClient() 
@@ -63,7 +63,8 @@ if args.target == 'llvm':
     dev = tvm.cpu()
 elif args.target == 'cuda':
     target = 'cuda'
-    dev = tvm.cuda()
+    dev = tvm.cuda(1)
+    # dev = tvm.cuda()
 elif args.target == 'opencl':
     target = 'opencl'
     dev = tvm.opencl()

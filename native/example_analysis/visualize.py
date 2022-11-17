@@ -58,8 +58,10 @@ partition_points = args.partition_points
 partition_points = ["_".join(l.split(',')) for l in partition_points]
 base_path = args.base_path
 
-path = '/'.join([base_path, "./UNet_M[{}-{}-{}-{}]_Q[{}]_S[{}].json".format(*model_config, quantization_level, "-".join(partition_points))])
-img_path = "./UNet_M[{}-{}-{}-{}]_Q[{}]_S[{}]".format(*model_config, quantization_level, "-".join(partition_points))
+# path = '/'.join([base_path, "./UNet_M[{}-{}-{}-{}]_Q[{}]_S[{}].json".format(*model_config, quantization_level, "-".join(partition_points))])
+path = '/'.join([base_path, "./UNet_M[{}-{}-{}-{}]_Q[{}]_full.json".format(*model_config, quantization_level)])
+# img_path = "./UNet_M[{}-{}-{}-{}]_Q[{}]_S[{}]".format(*model_config, quantization_level, "-".join(partition_points))
+img_path = "./UNet_M[{}-{}-{}-{}]_Q[{}]_full".format(*model_config, quantization_level)
 
 with open(path, "r") as json_file:
     json_graph = json.load(json_file)

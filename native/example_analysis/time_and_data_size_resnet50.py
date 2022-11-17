@@ -499,7 +499,7 @@ def get_time(lib, dev, loaded_params, input_idxs, output_idxs, graph_json_strs, 
         
         for i, oi in enumerate(output_idx):
             get_output_time += model.module.time_evaluator(func_name='get_output', dev=dev, number=total_frames)(i).results[0]
-        
+        print(run_time)
     # return set_input_time + run_time + get_output_time
     return set_input_time, run_time, get_output_time
 

@@ -1,5 +1,3 @@
-from faulthandler import disable
-from unittest import result
 # from SlicingMachine import TVMSlicer
 from mozer.slicer.SlicingMachine import TVMSlicer
 import os
@@ -76,6 +74,12 @@ class UnetCallback(DFPatternCallback):
             if pre in self.match_node:
                 # print("pat 1")
                 return self.dequant(self.quant(post))
+                # return self.dequant(
+                #         relay.layout_transform(
+                #         relay.layout_transform(
+                #             self.quant(post), src_layout='NCHW16c', dst_layout='NCHW'
+                #         ), src_layout='NCHW', dst_layout='NCHW16c')
+                #     )
         return post
 
 class UnetCallback2(DFPatternCallback):
@@ -120,6 +124,12 @@ class UnetCallback2(DFPatternCallback):
             if pre in self.match_node:
                 # print("pat 1")
                 return self.dequant(self.quant(post))
+                # return self.dequant(
+                #         relay.layout_transform(
+                #         relay.layout_transform(
+                #             self.quant(post), src_layout='NCHW16c', dst_layout='NCHW'
+                #         ), src_layout='NCHW', dst_layout='NCHW16c')
+                #     )
         return post
 
 
@@ -179,6 +189,12 @@ class UnetCallback3(DFPatternCallback):
             if pre in self.match_node:
                 # print("pat 1")
                 return self.dequant(self.quant(post))
+                # return self.dequant(
+                #         relay.layout_transform(
+                #         relay.layout_transform(
+                #             self.quant(post), src_layout='NCHW16c', dst_layout='NCHW'
+                #         ), src_layout='NCHW', dst_layout='NCHW16c')
+                #     )
         return post
 
 class UnetLeakyReLUCallback(DFPatternCallback):
@@ -235,8 +251,13 @@ class UnetCallback4(DFPatternCallback):
 
         if self.pattern.match(pre):
             if pre in self.match_node:
-                # print("pat 1")
                 return self.dequant(self.quant(post))
+                # return self.dequant(
+                #         relay.layout_transform(
+                #         relay.layout_transform(
+                #             self.quant(post), src_layout='NCHW16c', dst_layout='NCHW'
+                #         ), src_layout='NCHW', dst_layout='NCHW16c')
+                #     )
         return post
 
 class Int8Collector(DFPatternCallback):
@@ -253,14 +274,15 @@ class Int8Collector(DFPatternCallback):
     def callback(self, pre, post, node_map):
         # print(pre)
         self.match_node.append(pre)
-        return post
+        return pre
 
 
 parser = ArgumentParser()
 parser.add_argument('--partition_points', '-p', nargs='+', type=str, default=[], help='set partition points')
 parser.add_argument('--img_size', '-i', type=int, default=256, help='set image size')
 parser.add_argument('--model', '-m', type=str, default='unet', help='name of model')
-parser.add_argument('--target', '-t', type=str, default='cuda', help='name of taget')
+# parser.add_argument('--target', '-t', type=str, default='cuda', help='name of taget')
+parser.add_argument('--target', '-t', type=str, default='llvm', help='name of taget')
 parser.add_argument('--opt_level', '-o', type=int, default=3, help='set opt_level')
 parser.add_argument('--build', '-b', type=int, default=0, help='build model')
 parser.add_argument('--quantization_level', '-q', type=int, default=0, help='set quantization level')
@@ -269,7 +291,7 @@ parser.add_argument('--jetson', '-j', type=int, default=0, help='jetson')
 parser.add_argument('--base_path', type=str, default=os.environ['TS_DATA_PATH'] + "/tf_model/unet_v1/best/", help='path setting')
 args = parser.parse_args()
 
-# set_cuda_target_arch("sm_62")
+# set_cuda_target_arch("sm_61")
 # set_cuda_target_arch("sm_72")
 
 # set path
@@ -307,14 +329,13 @@ else:
         target = 'llvm'
         dev = tvm.cpu()
     elif args.target == 'cuda':
-        target = 'cuda'
-        dev = tvm.cuda()
+        target = 'cuda -arch=sm_61'
+        dev = tvm.cuda(1)
     elif args.target == 'opencl':
         target = 'opencl'
         dev = tvm.opencl()
 
 quantization_level = args.quantization_level
-
 upc = UnetPreProcessCallback()
 out = rewrite(upc, mod['main'])
 
@@ -366,7 +387,6 @@ else:
         # print(len(upc.match_node))
         uc2 = UnetCallback4(upc.match_node)
         out = rewrite(uc2, out)
-
         int8_collector = Int8Collector()
         rewrite(int8_collector, out)
         
@@ -380,12 +400,23 @@ else:
             out_nodes[callnodes_str.index(str(node))] = node
         # out = relay.Function(out.params, relay.Tuple(int8_collector.match_node + [out.body]), out.ret_type, out.type_params, out.attrs)
         out = relay.Function(out.params, relay.Tuple(out_nodes), out.ret_type, out.type_params, out.attrs)
+        print(type(out))
 
+print(out)    
+
+# with tvm.transform.PassContext(opt_level=args.opt_level, disabled_pass={'AlterOpLayout'}):
 with tvm.transform.PassContext(opt_level=args.opt_level):
+# with tvm.transform.PassContext(opt_level=4, disabled_pass={'AlterOpLayout'}):
     lib = relay.build(out, target, params=params)
+    # lib = relay.build(mod, target, params=params)
     # lib = relay.build(out, target, params=params, target_host="llvm -mtriple=aarch64-linux-gnueabihf -device=arm_cpu")
     # lib = relay.build(out, target='cuda -arch=sm_72 -model=tx2', params=params, target_host="llvm -mtriple=aarch64-linux-gnueabihf -device=arm_cpu")
     # lib = relay.build(out, target='cuda -arch=sm_72 -model=tx2', params=params, target_host='llvm -mtriple=aarch64-linux-gnueabihf -device=arm_cpu')
+# print(lib.lib['main'])
+# print(type(lib.module.ir_mod))
+# print(type(mod))
+# print(type(lib))
+# print(lib)
 
 graph_json_raw = lib['get_graph_json']()
 
@@ -430,6 +461,7 @@ else:
     json_format = '/'.join([base_path, "UNet_M[{}-{}-{}-{}]_Q[{}]_S[{}-{}].json"])
 
 with open(json_format.format(*model_config, quantization_level, 0, len(graph_info['nodes'])-1), "w") as json_file:
+    print([1], [len(graph_info['nodes'])-1])
     graph_json, input_indexs, output_indexs = tvm_slicer.slice_graph([1], [len(graph_info['nodes'])-1], is_quantize_sliced=True)
     graph_json['extra'] = {}
     graph_json['extra']['inputs'] = input_indexs
