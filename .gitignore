@@ -253,3 +253,4 @@ cython_debug/
 **/*.so
 **/*.params
 **/*.npy
+**/*.pdf

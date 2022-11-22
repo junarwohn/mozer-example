@@ -35,7 +35,7 @@ from tvm.contrib import relay_viz
 from tvm.relay import build_module
 
 
-def graph_split2(expr, split_conf, params=None):
+def graph_split(expr, split_conf, params=None):
     """Splitting the graph into a list of subgraphs"""
 
     def get_dep_var(sub_var_dep):
@@ -54,12 +54,12 @@ def graph_split2(expr, split_conf, params=None):
                     # The var of this call is a free_var
                     is_free_var = True
             # if the var of this call is a free_var, recreate it and give it a fixed input name.
-            # if is_free_var:
-            #     need_update = True
-            #     new_args.append(relay.var(f"data_n_{new_input_idx}", var.checked_type))
-            #     new_input_idx += 1
-            # else:
-            new_args.append(var)
+            if is_free_var:
+                need_update = True
+                new_args.append(relay.var(f"data_n_{new_input_idx}", var.checked_type))
+                new_input_idx += 1
+            else:
+                new_args.append(var)
         # if the 'tvm.relay.expr.Call' has a free_var, recreate it with new name as 'data_n_*'.
         if need_update:
             value = tvm.relay.expr.Call(
