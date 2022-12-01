@@ -15,7 +15,6 @@ import tvm.testing
 from mozer.slicer.SlicingMachine import TVMSlicer
 from mozer.slicer.Quantize import quantize
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 import tvm
 import tvm.relay as relay
@@ -37,59 +36,28 @@ from PIL import Image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import time
 
-parser = ArgumentParser()
-parser.add_argument('--partition', '-p', type=int, default=0)
-parser.add_argument('--batch_size', '-b', type=int, default=32)
-args = parser.parse_args()
-
-################################################
+# ###########################################################################
 # import resnet50
-# if True:
-if False:
-    weights_url = "".join(
-        [
-            " https://storage.googleapis.com/tensorflow/keras-applications/",
-            "resnet/resnet50_weights_tf_dim_ordering_tf_kernels.h5",
-        ]
-    )
-    weights_file = "resnet50_keras_new.h5"
+weights_url = "".join(
+    [
+        " https://storage.googleapis.com/tensorflow/keras-applications/",
+        "resnet/resnet50_weights_tf_dim_ordering_tf_kernels.h5",
+    ]
+)
+weights_file = "resnet50_keras_new.h5"
 
 
-    weights_path = download_testdata(weights_url, weights_file, module="keras")
-    model_keras = tf.keras.applications.resnet.ResNet50(
-        include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
-    )
-    model_keras.load_weights(weights_path)
-################################################
-
-
-################################################
-# import resnet152
-if True:
-# if False:
-    weights_url = "".join(
-        [
-            " https://storage.googleapis.com/tensorflow/keras-applications/",
-            "resnet/resnet152_weights_tf_dim_ordering_tf_kernels.h5",
-        ]
-    )
-    weights_file = "resnet152_keras_new.h5"
-
-
-    weights_path = download_testdata(weights_url, weights_file, module="keras")
-    model_keras = tf.keras.applications.resnet.ResNet152(
-        include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
-    )
-    model_keras.load_weights(weights_path)
-################################################
+weights_path = download_testdata(weights_url, weights_file, module="keras")
+model_keras = tf.keras.applications.resnet.ResNet50(
+    include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
+)
+model_keras.load_weights(weights_path)
 
 
 img_url = "https://github.com/dmlc/mxnet.js/blob/main/data/cat.png?raw=true"
 img_path = download_testdata(img_url, "cat.png", module="data")
 img = Image.open(img_path).resize((224, 224))
-# data = np.array(img)[np.newaxis, :].astype("float32")
-data = np.array(img).astype("float32")
-data = np.array([data for _ in range(args.batch_size)])
+data = np.array(img)[np.newaxis, :].astype("float32")
 data = preprocess_input(data).transpose([0, 3, 1, 2])
 
 ################################################
@@ -99,29 +67,28 @@ mod, params = relay.frontend.from_keras(model_keras, shape_dict)
 
 
 
-relay_slicer = TVMSlicer()
-print(relay_slicer.get_node_count(mod, is_op('add')(wildcard(), wildcard())))
-# exit()
-split_config = [{"op_name": "add", "op_index": 2}]
+# relay_slicer = TVMSlicer()
+# print(relay_slicer.get_node_count(mod, is_op('add')(wildcard(), wildcard())))
+# # exit()
+# split_config = [{"op_name": "add", "op_index": 2}]
 
-subgraphs, input_name_hints, output_name_hints = relay_slicer.slice_relay_graph(mod['main'], split_config, params)
+# subgraphs, input_name_hints, output_name_hints = relay_slicer.slice_relay_graph(mod['main'], split_config, params)
 
-target = 'cuda'
-dev = tvm.cuda(0)
+
 
 
 # print(input_name_hints, output_name_hints)
 
 
 ################################################
-# """
+"""
 from tvm.contrib import relay_viz
 graph_attr = {"color": "red"}
 node_attr = {"color": "blue"}
 edge_attr = {"color": "black"}
 def get_node_attr(node):
     if "add" in node.type_name and "bias_add" not in node.type_name:
-        # print(node.type_name)
+        print(node.type_name)
         return {
             "fillcolor": "green",
             "style": "filled",
@@ -164,21 +131,35 @@ viz = relay_viz.RelayVisualizer(
     parser=relay_viz.DotVizParser())
 viz.render("sliced_1")
 exit()
+"""
 
-# """
 ################################################
-print("load original")
-time.sleep(5)
 # # Original
+target = 'cuda'
+# dev = tvm.cuda(0)
+# dev = tvm.device("cuda", 1)
+target = 'cuda -arch=sm_61'
+dev = tvm.cuda(1)
 mod = mod
 with tvm.transform.PassContext(opt_level=4):
     lib = relay.build(mod, target, params=params)
 total_model = graph_executor.GraphModule(lib["default"](dev))
 
-total_model.set_input('input_1', data)
-total_model.run()
-total_model.get_output(0).numpy()
 
+for i in range(50):
+    total_model.set_input('input_1', data)
+    total_model.run()
+    total_model.get_output(0).numpy()
+
+now = time.time()
+for i in range(100):
+    total_model.set_input('input_1', data)
+    total_model.run()
+    total_model.get_output(0).numpy()
+# print("Single model 2080ti 100iter: ", time.time() - now)
+print("Single model 1050ti 100iter: ", time.time() - now)
+
+"""
 ################################################
 print("load 1")
 time.sleep(5)
@@ -206,6 +187,7 @@ with tvm.transform.PassContext(opt_level=4):
 model_2 = graph_executor.GraphModule(lib["default"](dev))
 
 ################################################
+"""
 
 dtype = "float32"
 total_model.set_input('input_1', data)
@@ -226,9 +208,9 @@ synset_path = download_testdata(synset_url, synset_name, module="data")
 with open(synset_path) as f:
     synset = eval(f.read())
 print("Relay top-1 id: {}, class name: {}".format(top1_tvm, synset[top1_tvm]))
-
+"""
 ################################################
-1
+
 model_1.set_input("input_1", data)
 model_1.run()
 out_dict = dict()
@@ -244,3 +226,4 @@ top1_keras = np.argmax(partition_out)
 print("Partition top-1 id: {}, class name: {}".format(top1_keras, synset[top1_keras]))
 
 ################################################
+"""

@@ -82,7 +82,7 @@ else:
         # dev = tvm.cuda(1)
         # 2080ti
         target = 'cuda -arch=sm_75'
-        dev = tvm.cuda(0)
+        dev = tvm.device("cuda", 0)
     elif args.target == 'opencl':
         target = 'opencl'
         dev = tvm.opencl()
