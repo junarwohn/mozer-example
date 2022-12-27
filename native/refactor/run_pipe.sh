@@ -1,18 +1,43 @@
 #!/bin/bash
 # echo "Bash version ${BASH_VERSION}..."
-CMD="python3 pipeline_resnet_test.py "
+CMD_PIPELINE="python3 pipeline_resnet_test.py "
+CMD_SINGLE="python3 single_resnet_test.py "
+CMD_SEQ="python3 sequential_resnet_test.py "
 PARTITION_CNT=50
+PARTITION_CNT=16
 PARTITION_FORMAT="-p "
 BATCH_CNT=256
+BATCH_CNT=1
 BATCH_FORMAT="-b "
 
-for ((batch=1;batch<$BATCH_CNT;batch*=2))
+# Single execution
+# for ((batch=1;batch<=$BATCH_CNT;batch*=2))
+# do
+#     # echo "Batch : " $batch
+#     # for ((partition=1;partition<$PARTITION_CNT;partition++))
+#     # do
+#         $CMD_SINGLE $BATCH_FORMAT $batch
+#     # done
+# done
+
+# Sequential execution
+# for ((batch=1;batch<=$BATCH_CNT;batch*=2))
+# do
+#     # echo "Batch : " $batch
+#     for ((partition=1;partition<$PARTITION_CNT;partition++))
+#     do
+#         $CMD_SEQ $PARTITION_FORMAT $partition
+#     done
+# done
+
+
+# # # Pipeline execution
+for ((batch=1;batch<=$BATCH_CNT;batch*=2))
 do
     # echo "Batch : " $batch
-    for ((partition=1;partition<$PARTITION_CNT;partition++))
+    for ((partition=1;partition<$PARTITION_CNT;partition+=1))
     do
-        $CMD $PARTITION_FORMAT $partition $BATCH_FORMAT $batch
-        # $CMD $PARTITION_FORMAT $partition $BATCH_FORMAT $batch
+        $CMD_PIPELINE $PARTITION_FORMAT $partition $BATCH_FORMAT $batch
     done
 done
 

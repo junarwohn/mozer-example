@@ -39,14 +39,14 @@ import time
 from tvm.contrib import graph_executor, pipeline_executor, pipeline_executor_build
 
 parser = ArgumentParser()
-parser.add_argument('--partition', '-p', type=int, default=42)
+parser.add_argument('--partition', '-p', type=int, default=0)
 parser.add_argument('--batch_size', '-b', type=int, default=1)
 args = parser.parse_args()
 
 ################################################
 # import resnet50
-if True:
-# if False:
+# if True:
+if False:
     weights_url = "".join(
         [
             " https://storage.googleapis.com/tensorflow/keras-applications/",
@@ -66,8 +66,8 @@ if True:
 
 ################################################
 # import resnet152
-# if True:
-if False:
+if True:
+# if False:
     weights_url = "".join(
         [
             " https://storage.googleapis.com/tensorflow/keras-applications/",
@@ -82,8 +82,8 @@ if False:
         include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
     )
     model_keras.load_weights(weights_path)
-
 ################################################
+
 
 img_url = "https://github.com/dmlc/mxnet.js/blob/main/data/cat.png?raw=true"
 img_path = download_testdata(img_url, "cat.png", module="data")
@@ -126,111 +126,67 @@ for idx, graph in enumerate(subgraphs):
     ann = run_opt_pass(graph, transform.ToGraphNormalForm())
     subgraphs[idx] =  tvm.IRModule.from_expr(ann)
 
-pipe_config = pipeline_executor_build.PipelineConfig()
+# pipe_config = pipeline_executor_build.PipelineConfig()
 mod0, mod1 = subgraphs[0], subgraphs[1]
 
-# pipe_config[mod0].target = "cuda"
-pipe_config[mod0].target = "cuda -arch=sm_75"
-pipe_config[mod0].dev = tvm.device("cuda", 0)
-# pipe_config[mod0].build_func = cutlass_build
-pipe_config[mod0].export_cc = "nvcc"
+target0 = "cuda -arch=sm_75"
+dev0 = tvm.device("cuda", 0)
 
-# pipe_config[mod1].target = "cuda"
-pipe_config[mod1].target = "cuda -arch=sm_61"
-pipe_config[mod1].dev = tvm.device("cuda", 1)
-# pipe_config[mod1].target = "cuda -arch=sm_75"
-# pipe_config[mod1].dev = tvm.device("cuda", 0)
-# pipe_config[mod1].build_func = cutlass_build
-pipe_config[mod1].export_cc = "nvcc"
-
-# Create the pipeline by connecting the subgraph modules.
-# The global input will be forwarded to the input interface of the first module named mod0
-for name_hint in input_name_hints[0]:
-    pipe_config["input"][name_hint].connect(pipe_config[mod0]["input"][name_hint])
+target1 = "cuda -arch=sm_61"
+dev1 = tvm.device("cuda", 1)
 
 in_out_mapper = dict()
 for idx, name in enumerate(output_name_hints[0]):
     in_out_mapper[name] = idx
-# The first output of mod0 will be forwarded to the input interface of mod1
-for name in input_name_hints[1]:
-    pipe_config[mod0]["output"][in_out_mapper[name]].connect(pipe_config[mod1]["input"][name])
-
-# The first output of mod1 will be the first global output.
-pipe_config[mod1]["output"][0].connect(pipe_config["output"][0])
 
 with tvm.transform.PassContext(opt_level=4):
-    pipeline_mod_factory = pipeline_executor_build.build(pipe_config)
+    lib0 = relay.build(mod0, target0, params=params)
+    lib1 = relay.build(mod1, target1, params=params)
 
-# exit()
-# directory_path = tvm.contrib.utils.tempdir().temp_dir
-# os.makedirs(directory_path, exist_ok=True)
-# config_file_name = pipeline_mod_factory.export_library(directory_path)
-# pipeline_module = pipeline_executor.PipelineModule.load_library(config_file_name)
-pipeline_module = pipeline_executor.PipelineModule(pipeline_mod_factory)
+model0 = graph_executor.GraphModule(lib0["default"](dev0))
+model1 = graph_executor.GraphModule(lib1["default"](dev1))
+
 data = tvm.nd.array(data)
-iter = 50
-# iter = 1
+iter = 100
 total_outs = []
 after_burn = 0
+outs = dict()
+
 for i in range(iter):
-    pipeline_module.set_input("input_1", data)
-    pipeline_module.run()
-    outputs = pipeline_module.get_output(synchronize=False)
-    # if i - len(total_outs) + 1 > 5 and len(outputs) == 0:
-    #     outputs = pipeline_module.get_output(synchronize=True)
+    model0.set_input("input_1", data)
+    model0.run()
+    for idx, name_hint in enumerate(output_name_hints[0]):
+        outs[idx] = model0.get_output(idx).numpy()
 
-    if outputs:
-        for out in outputs:
-            partition_out = out.numpy()[0]
-            top1_keras = np.argmax(partition_out)
-            total_outs.append(1)
-
-
-while len(total_outs) != iter:
-    if True:
-        outputs = pipeline_module.get_output(synchronize=True)
-
-    if outputs:
-        for out in outputs:
-            partition_out = out.numpy()[0]
-            top1_keras = np.argmax(partition_out)
-            total_outs.append(1)
+    for name_hint in input_name_hints[1]:
+        model1.set_input(name_hint, outs[in_out_mapper[name_hint]])
+    model1.run()
+    out = model1.get_output(0).numpy()
 
 total_outs = []
 iter = 10000
-iter = 100
-# iter = 1
 after_burn = 0
+
 now = time.time()
 for i in range(iter):
-    pipeline_module.set_input("input_1", data)
-    pipeline_module.run()
-    outputs = pipeline_module.get_output(synchronize=False)
+    model0.set_input("input_1", data)
+    model0.run()
+    for idx, name_hint in enumerate(output_name_hints[0]):
+        outs[idx] = model0.get_output(idx).numpy()
+model0_time = time.time() - now
 
-    # if i - len(total_outs) + 1 > 5 and len(outputs) == 0:
-    #     outputs = pipeline_module.get_output(synchronize=True)
+now = time.time()
+for i in range(iter):
+    for name_hint in input_name_hints[1]:
+        model1.set_input(name_hint, outs[in_out_mapper[name_hint]])
+    model1.run()
+    out = model1.get_output(0).numpy()
+model1_time = time.time() - now
 
-    if outputs:
-        for out in outputs:
-            partition_out = out.numpy()[0]
-            top1_keras = np.argmax(partition_out)
-            total_outs.append(1)
-
-while len(total_outs) != iter:
-    if True:
-        outputs = pipeline_module.get_output(synchronize=True)
-
-    if outputs:
-        for out in outputs:
-            partition_out = out.numpy()[0]
-            top1_keras = np.argmax(partition_out)
-            total_outs.append(1)
-
-print(args.partition, args.batch_size, time.time() - now, sep=',')
-# tvm_out = top1_keras
-# top1_tvm = top1_keras
-# print("Relay top-1 id: {}, class name: {}".format(top1_tvm, synset[top1_tvm]))
-
+print(args.partition, args.batch_size, model0_time, model1_time, sep=',')
+tvm_out = out
+top1_tvm = np.argmax(tvm_out)
+print("Relay top-1 id: {}, class name: {}".format(top1_tvm, synset[top1_tvm]))
 ################################################
 """
 from tvm.contrib import relay_viz

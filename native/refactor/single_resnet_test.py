@@ -36,48 +36,59 @@ from PIL import Image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import time
 
-# ###########################################################################
+parser = ArgumentParser()
+parser.add_argument('--partition', '-p', type=int, default=0)
+parser.add_argument('--batch_size', '-b', type=int, default=1)
+args = parser.parse_args()
+
+################################################
 # import resnet50
-weights_url = "".join(
-    [
-        " https://storage.googleapis.com/tensorflow/keras-applications/",
-        "resnet/resnet50_weights_tf_dim_ordering_tf_kernels.h5",
-    ]
-)
-weights_file = "resnet50_keras_new.h5"
+if True:
+# if False:
+    weights_url = "".join(
+        [
+            " https://storage.googleapis.com/tensorflow/keras-applications/",
+            "resnet/resnet50_weights_tf_dim_ordering_tf_kernels.h5",
+        ]
+    )
+    weights_file = "resnet50_keras_new.h5"
 
 
-weights_path = download_testdata(weights_url, weights_file, module="keras")
-model_keras = tf.keras.applications.resnet.ResNet50(
-    include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
-)
-model_keras.load_weights(weights_path)
+    weights_path = download_testdata(weights_url, weights_file, module="keras")
+    model_keras = tf.keras.applications.resnet.ResNet50(
+        include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
+    )
+    model_keras.load_weights(weights_path)
+################################################
 
+
+################################################
+# import resnet152
+# if True:
+if False:
+    weights_url = "".join(
+        [
+            " https://storage.googleapis.com/tensorflow/keras-applications/",
+            "resnet/resnet152_weights_tf_dim_ordering_tf_kernels.h5",
+        ]
+    )
+    weights_file = "resnet152_keras_new.h5"
+
+
+    weights_path = download_testdata(weights_url, weights_file, module="keras")
+    model_keras = tf.keras.applications.resnet.ResNet152(
+        include_top=True, weights=None, input_shape=(224, 224, 3), classes=1000
+    )
+    model_keras.load_weights(weights_path)
+################################################
 
 img_url = "https://github.com/dmlc/mxnet.js/blob/main/data/cat.png?raw=true"
 img_path = download_testdata(img_url, "cat.png", module="data")
 img = Image.open(img_path).resize((224, 224))
-data = np.array(img)[np.newaxis, :].astype("float32")
+# data = np.array(img)[np.newaxis, :].astype("float32")
+data = np.array(img).astype("float32")
+data = np.array([data for _ in range(args.batch_size)])
 data = preprocess_input(data).transpose([0, 3, 1, 2])
-
-################################################
-
-shape_dict = {"input_1": data.shape}
-mod, params = relay.frontend.from_keras(model_keras, shape_dict)
-
-
-
-# relay_slicer = TVMSlicer()
-# print(relay_slicer.get_node_count(mod, is_op('add')(wildcard(), wildcard())))
-# # exit()
-# split_config = [{"op_name": "add", "op_index": 2}]
-
-# subgraphs, input_name_hints, output_name_hints = relay_slicer.slice_relay_graph(mod['main'], split_config, params)
-
-
-
-
-# print(input_name_hints, output_name_hints)
 
 
 ################################################
@@ -134,30 +145,53 @@ exit()
 """
 
 ################################################
-# # Original
+
+synset_url = "".join(
+    [
+        "https://gist.githubusercontent.com/zhreshold/",
+        "4d0b62f3d01426887599d4f7ede23ee5/raw/",
+        "596b27d23537e5a1b5751d2b0481ef172f58b539/",
+        "imagenet1000_clsid_to_human.txt",
+    ]
+)
+synset_name = "imagenet1000_clsid_to_human.txt"
+synset_path = download_testdata(synset_url, synset_name, module="data")
+with open(synset_path) as f:
+    synset = eval(f.read())
+
+################################################
+
+shape_dict = {"input_1": data.shape}
+mod, params = relay.frontend.from_keras(model_keras, shape_dict)
+
 target = 'cuda'
-# dev = tvm.cuda(0)
+dev = tvm.cuda(0)
 # dev = tvm.device("cuda", 1)
-target = 'cuda -arch=sm_61'
-dev = tvm.cuda(1)
-mod = mod
+# target = 'cuda -arch=sm_61'
+# dev = tvm.cuda(1)
 with tvm.transform.PassContext(opt_level=4):
     lib = relay.build(mod, target, params=params)
 total_model = graph_executor.GraphModule(lib["default"](dev))
 
-
+total_outs = []
 for i in range(50):
     total_model.set_input('input_1', data)
     total_model.run()
     total_model.get_output(0).numpy()
+    total_outs.append(1)
 
+total_outs = []
+iter = 10000
+iter = 100
 now = time.time()
-for i in range(100):
+for i in range(iter):
     total_model.set_input('input_1', data)
     total_model.run()
-    total_model.get_output(0).numpy()
-# print("Single model 2080ti 100iter: ", time.time() - now)
-print("Single model 1050ti 100iter: ", time.time() - now)
+    partition_out = total_model.get_output(0).numpy()
+    top1_keras = np.argmax(partition_out)
+    total_outs.append(1)
+
+print(args.partition, args.batch_size, time.time() - now, sep=',')
 
 """
 ################################################
