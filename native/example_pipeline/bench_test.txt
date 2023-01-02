@@ -1,0 +1,23 @@
+bullfrog | tree frog | green lizard
+resnet50, layers : 177
+running_time 3.580915689468384
+resnet101, layers : 347
+running_time 6.967777967453003
+resnet152, layers : 517
+running_time 10.136934757232666
+mobilenet_1.00_224, layers : 91
+running_time 1.8520464897155762
+mobilenetv2_1.00_224, layers : 156
+running_time 3.0635712146759033
+MobilenetV3small, layers : 239
+running_time 4.258486032485962
+MobilenetV3small, layers : 239
+running_time 4.1852967739105225
+vgg16, layers : 23
+running_time 0.6258349418640137
+vgg19, layers : 26
+running_time 0.7158021926879883
+efficientnetb0, layers : 241
+running_time 5.544879674911499
+efficientnetv2-b0, layers : 273
+running_time 6.286005258560181

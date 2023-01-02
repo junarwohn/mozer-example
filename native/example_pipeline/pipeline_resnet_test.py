@@ -39,7 +39,7 @@ import time
 from tvm.contrib import graph_executor, pipeline_executor, pipeline_executor_build
 
 parser = ArgumentParser()
-parser.add_argument('--partition', '-p', type=int, default=42)
+parser.add_argument('--partition', '-p', type=int, default=13)
 parser.add_argument('--batch_size', '-b', type=int, default=1)
 args = parser.parse_args()
 
@@ -129,19 +129,28 @@ for idx, graph in enumerate(subgraphs):
 pipe_config = pipeline_executor_build.PipelineConfig()
 mod0, mod1 = subgraphs[0], subgraphs[1]
 
-# pipe_config[mod0].target = "cuda"
-pipe_config[mod0].target = "cuda -arch=sm_75"
-pipe_config[mod0].dev = tvm.device("cuda", 0)
-# pipe_config[mod0].build_func = cutlass_build
+# # pipe_config[mod0].target = "cuda"
+# pipe_config[mod0].target = "cuda -arch=sm_75"
+# pipe_config[mod0].dev = tvm.device("cuda", 0)
+# # pipe_config[mod0].build_func = cutlass_build
+# pipe_config[mod0].export_cc = "nvcc"
+
+
+pipe_config[mod0].target = "cuda -arch=sm_61"
+pipe_config[mod0].dev = tvm.device("cuda", 1)
 pipe_config[mod0].export_cc = "nvcc"
 
+
+pipe_config[mod1].target = "llvm"
+pipe_config[mod1].dev = tvm.device("cpu", 0)
+
 # pipe_config[mod1].target = "cuda"
-pipe_config[mod1].target = "cuda -arch=sm_61"
-pipe_config[mod1].dev = tvm.device("cuda", 1)
+# pipe_config[mod1].target = "cuda -arch=sm_61"
+# pipe_config[mod1].dev = tvm.device("cuda", 1)
 # pipe_config[mod1].target = "cuda -arch=sm_75"
 # pipe_config[mod1].dev = tvm.device("cuda", 0)
 # pipe_config[mod1].build_func = cutlass_build
-pipe_config[mod1].export_cc = "nvcc"
+# pipe_config[mod1].export_cc = "nvcc"
 
 # Create the pipeline by connecting the subgraph modules.
 # The global input will be forwarded to the input interface of the first module named mod0

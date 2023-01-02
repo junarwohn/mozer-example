@@ -93,6 +93,25 @@ data = preprocess_input(data).transpose([0, 3, 1, 2])
 
 ################################################
 """
+
+synset_url = "".join(
+    [
+        "https://gist.githubusercontent.com/zhreshold/",
+        "4d0b62f3d01426887599d4f7ede23ee5/raw/",
+        "596b27d23537e5a1b5751d2b0481ef172f58b539/",
+        "imagenet1000_clsid_to_human.txt",
+    ]
+)
+synset_name = "imagenet1000_clsid_to_human.txt"
+synset_path = download_testdata(synset_url, synset_name, module="data")
+with open(synset_path) as f:
+    synset = eval(f.read())
+
+################################################
+
+shape_dict = {"input_1": data.shape}
+mod, params = relay.frontend.from_keras(model_keras, shape_dict)
+
 from tvm.contrib import relay_viz
 graph_attr = {"color": "red"}
 node_attr = {"color": "blue"}
@@ -120,27 +139,27 @@ viz = relay_viz.RelayVisualizer(
     relay_param=params,
     plotter=dot_plotter,
     parser=relay_viz.DotVizParser())
-viz.render("total")
+viz.render("resnet-50")
 
-ann = run_opt_pass(subgraphs[0], transform.ToGraphNormalForm())
-mod1 = tvm.IRModule.from_expr(ann)
+# ann = run_opt_pass(subgraphs[0], transform.ToGraphNormalForm())
+# mod1 = tvm.IRModule.from_expr(ann)
 
-viz = relay_viz.RelayVisualizer(
-    mod1,
-    relay_param=params,
-    plotter=dot_plotter,
-    parser=relay_viz.DotVizParser())
-viz.render("slice_0")
+# viz = relay_viz.RelayVisualizer(
+#     mod1,
+#     relay_param=params,
+#     plotter=dot_plotter,
+#     parser=relay_viz.DotVizParser())
+# viz.render("slice_0")
 
-ann = run_opt_pass(subgraphs[1], transform.ToGraphNormalForm())
-mod2 = tvm.IRModule.from_expr(ann)
+# ann = run_opt_pass(subgraphs[1], transform.ToGraphNormalForm())
+# mod2 = tvm.IRModule.from_expr(ann)
 
-viz = relay_viz.RelayVisualizer(
-    mod2,
-    relay_param=params,
-    plotter=dot_plotter,
-    parser=relay_viz.DotVizParser())
-viz.render("sliced_1")
+# viz = relay_viz.RelayVisualizer(
+#     mod2,
+#     relay_param=params,
+#     plotter=dot_plotter,
+#     parser=relay_viz.DotVizParser())
+# viz.render("sliced_1")
 exit()
 """
 
@@ -164,8 +183,10 @@ with open(synset_path) as f:
 shape_dict = {"input_1": data.shape}
 mod, params = relay.frontend.from_keras(model_keras, shape_dict)
 
-target = 'cuda'
-dev = tvm.cuda(0)
+# target = 'cuda'
+# dev = tvm.cuda(1)
+target = 'llvm'
+dev = tvm.cpu(0)
 # dev = tvm.device("cuda", 1)
 # target = 'cuda -arch=sm_61'
 # dev = tvm.cuda(1)
