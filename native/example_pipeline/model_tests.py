@@ -15,7 +15,7 @@ img_rows,img_cols = 224,224
 # net = MobileNet(weights='imagenet', input_shape=(img_rows, img_cols, 3))
 
 image_path = "/home/jd/workspace/mozer-example/native/example_pipeline/treefrog.jpg"
-resized_image = cv2.resize(cv2.imread(image_path), [224, 224])
+resized_image = cv2.resize(cv2.imread(image_path), (224, 224))
 
 ########################################
 
