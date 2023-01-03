@@ -89,7 +89,8 @@ img = Image.open(img_path).resize((224, 224))
 data = np.array(img).astype("float32")
 data = np.array([data for _ in range(args.batch_size)])
 data = preprocess_input(data).transpose([0, 3, 1, 2])
-
+# print(data.shape)
+# exit()
 
 ################################################
 """
