@@ -1,0 +1,36 @@
+---------------------------------------------------
+resnet50, layers : 177
+tf native running_time 18.222583293914795
+One or more operators have not been tuned. Please tune your model for better performance. Use DEBUG logging level to see more details.
+GPU(CUDA) tvm running_time 2.3172335624694824
+CPU(LLVM) tvm running_time 46.93842053413391
+---------------------------------------------------
+---------------------------------------------------
+resnet101, layers : 347
+tf native running_time 33.856316804885864
+GPU(CUDA) tvm running_time 4.034367084503174
+CPU(LLVM) tvm running_time 91.63584351539612
+---------------------------------------------------
+---------------------------------------------------
+resnet152, layers : 517
+tf native running_time 49.65320897102356
+GPU(CUDA) tvm running_time 5.703214406967163
+---------------------------------------------------
+---------------------------------------------------
+mobilenet_1.00_224, layers : 91
+tf native running_time 9.915844678878784
+GPU(CUDA) tvm running_time 0.6123306751251221
+CPU(LLVM) tvm running_time 12.460827112197876
+---------------------------------------------------
+---------------------------------------------------
+vgg16, layers : 23
+tf native running_time 5.821646690368652
+GPU(CUDA) tvm running_time 3.2986061573028564
+CPU(LLVM) tvm running_time 72.00726199150085
+---------------------------------------------------
+---------------------------------------------------
+vgg19, layers : 26
+tf native running_time 7.062862396240234
+GPU(CUDA) tvm running_time 3.8341434001922607
+CPU(LLVM) tvm running_time 91.49661064147949
+---------------------------------------------------

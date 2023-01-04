@@ -140,25 +140,25 @@ image_data = preprocess_input(resized_image)
 
 ########################################
 
-# Resnet 50
-net = tf.keras.applications.ResNet50(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-check_model(net, image_data)
-tf.keras.backend.clear_session()
-
-# Resnet 101
-net = tf.keras.applications.ResNet101(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-check_model(net, image_data)
-tf.keras.backend.clear_session()
-
-# Resnet 152
-net = tf.keras.applications.ResNet152(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-check_model(net, image_data)
-tf.keras.backend.clear_session()
-
-# MobileNet
-net = tf.keras.applications.mobilenet.MobileNet(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-check_model(net, image_data)
-tf.keras.backend.clear_session()
+# # Resnet 50
+# net = tf.keras.applications.ResNet50(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# check_model(net, image_data)
+# tf.keras.backend.clear_session()
+# 
+# # Resnet 101
+# net = tf.keras.applications.ResNet101(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# check_model(net, image_data)
+# tf.keras.backend.clear_session()
+# 
+# # Resnet 152
+# net = tf.keras.applications.ResNet152(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# check_model(net, image_data)
+# tf.keras.backend.clear_session()
+# 
+# # MobileNet
+# net = tf.keras.applications.mobilenet.MobileNet(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# check_model(net, image_data)
+# tf.keras.backend.clear_session()
 
 # # MobileNet V2
 # net = tf.keras.applications.mobilenet_v2.MobileNetV2(weights='imagenet', input_shape=(img_rows, img_cols, 3))
@@ -175,10 +175,10 @@ tf.keras.backend.clear_session()
 # check_model(net, image_data)
 # tf.keras.backend.clear_session()
 
-# VGG16
-net = tf.keras.applications.VGG16(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-check_model(net, image_data)
-tf.keras.backend.clear_session()
+# # VGG16
+# net = tf.keras.applications.VGG16(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# check_model(net, image_data)
+# tf.keras.backend.clear_session()
 
 # VGG19
 net = tf.keras.applications.VGG19(weights='imagenet', input_shape=(img_rows, img_cols, 3))
