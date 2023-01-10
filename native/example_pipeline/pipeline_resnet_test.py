@@ -39,14 +39,14 @@ import time
 from tvm.contrib import graph_executor, pipeline_executor, pipeline_executor_build
 
 parser = ArgumentParser()
-parser.add_argument('--partition', '-p', type=int, default=13)
+parser.add_argument('--partition', '-p', type=int, default=25)
 parser.add_argument('--batch_size', '-b', type=int, default=1)
 args = parser.parse_args()
 
 ################################################
 # import resnet50
-if True:
-# if False:
+# if True:
+if False:
     weights_url = "".join(
         [
             " https://storage.googleapis.com/tensorflow/keras-applications/",
@@ -66,8 +66,8 @@ if True:
 
 ################################################
 # import resnet152
-# if True:
-if False:
+if True:
+# if False:
     weights_url = "".join(
         [
             " https://storage.googleapis.com/tensorflow/keras-applications/",
@@ -129,16 +129,16 @@ for idx, graph in enumerate(subgraphs):
 pipe_config = pipeline_executor_build.PipelineConfig()
 mod0, mod1 = subgraphs[0], subgraphs[1]
 
-# # pipe_config[mod0].target = "cuda"
-# pipe_config[mod0].target = "cuda -arch=sm_75"
-# pipe_config[mod0].dev = tvm.device("cuda", 0)
+# pipe_config[mod0].target = "cuda"
+pipe_config[mod0].target = "cuda -arch=sm_75"
+pipe_config[mod0].dev = tvm.device("cuda", 0)
 # # pipe_config[mod0].build_func = cutlass_build
-# pipe_config[mod0].export_cc = "nvcc"
-
-
-pipe_config[mod0].target = "cuda -arch=sm_61"
-pipe_config[mod0].dev = tvm.device("cuda", 1)
 pipe_config[mod0].export_cc = "nvcc"
+
+
+# pipe_config[mod0].target = "cuda -arch=sm_61"
+# pipe_config[mod0].dev = tvm.device("cuda", 1)
+# pipe_config[mod0].export_cc = "nvcc"
 
 
 pipe_config[mod1].target = "llvm"
@@ -147,10 +147,10 @@ pipe_config[mod1].dev = tvm.device("cpu", 0)
 # pipe_config[mod1].target = "cuda"
 # pipe_config[mod1].target = "cuda -arch=sm_61"
 # pipe_config[mod1].dev = tvm.device("cuda", 1)
-# pipe_config[mod1].target = "cuda -arch=sm_75"
-# pipe_config[mod1].dev = tvm.device("cuda", 0)
+pipe_config[mod1].target = "cuda -arch=sm_75"
+pipe_config[mod1].dev = tvm.device("cuda", 0)
 # pipe_config[mod1].build_func = cutlass_build
-# pipe_config[mod1].export_cc = "nvcc"
+pipe_config[mod1].export_cc = "nvcc"
 
 # Create the pipeline by connecting the subgraph modules.
 # The global input will be forwarded to the input interface of the first module named mod0
@@ -177,7 +177,7 @@ with tvm.transform.PassContext(opt_level=4):
 # pipeline_module = pipeline_executor.PipelineModule.load_library(config_file_name)
 pipeline_module = pipeline_executor.PipelineModule(pipeline_mod_factory)
 data = tvm.nd.array(data)
-iter = 50
+iter = 100
 # iter = 1
 total_outs = []
 after_burn = 0
@@ -206,8 +206,8 @@ while len(total_outs) != iter:
             total_outs.append(1)
 
 total_outs = []
-iter = 10000
-iter = 100
+iter = 1000
+# iter = 100
 # iter = 1
 after_burn = 0
 now = time.time()
