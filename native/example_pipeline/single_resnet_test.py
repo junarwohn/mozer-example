@@ -184,10 +184,10 @@ with open(synset_path) as f:
 shape_dict = {"input_1": data.shape}
 mod, params = relay.frontend.from_keras(model_keras, shape_dict)
 
-# target = 'cuda'
-# dev = tvm.cuda(1)
-target = 'llvm'
-dev = tvm.cpu(0)
+target = 'cuda'
+dev = tvm.cuda(0)
+#target = 'llvm'
+#dev = tvm.cpu(0)
 # dev = tvm.device("cuda", 1)
 # target = 'cuda -arch=sm_61'
 # dev = tvm.cuda(1)

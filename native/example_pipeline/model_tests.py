@@ -31,8 +31,8 @@ def preprocess_input(resized_image):
 
 def check_model(net, input_data):
     print("---------------------------------------------------")
-    warm_up_iteration = 50
-    iteration = 100
+    warm_up_iteration = 500
+    iteration = 1000
     
     print("{}, layers : {}".format(net.name, len(net.layers)))
     
@@ -55,6 +55,10 @@ def check_model(net, input_data):
     # TVM GPU(CUDA) inference 
     target = 'cuda'
     dev = tvm.cuda(0)
+
+
+    # target = 'cuda -arch=sm_75'
+    # dev = tvm.cuda(1)
 
     tvm.relay.backend.te_compiler.get().clear()
     with tvm.transform.PassContext(opt_level=4):
@@ -79,34 +83,34 @@ def check_model(net, input_data):
     print("GPU(CUDA) tvm running_time", running_time)
     del total_model
 
-    # TVM CPU(LLVM) inference
+    # # TVM CPU(LLVM) inference
 
-    target = 'llvm'
-    dev = tvm.cpu(0)
+    # target = 'llvm'
+    # dev = tvm.cpu(0)
 
-    tvm.relay.backend.te_compiler.get().clear()
-    with tvm.transform.PassContext(opt_level=4):
-        lib = relay.build(mod, target, params=params)
+    # tvm.relay.backend.te_compiler.get().clear()
+    # with tvm.transform.PassContext(opt_level=4):
+    #     lib = relay.build(mod, target, params=params)
 
-    total_model = tvm.contrib.graph_executor.GraphModule(lib["default"](dev))
+    # total_model = tvm.contrib.graph_executor.GraphModule(lib["default"](dev))
 
-    # Warm Up Phase - 50 iteration
-    for _ in range(warm_up_iteration):
-        total_model.set_input('input_1', input_data)
-        total_model.run()
-        total_model.get_output(0).numpy()
+    # # Warm Up Phase - 50 iteration
+    # for _ in range(warm_up_iteration):
+    #     total_model.set_input('input_1', input_data)
+    #     total_model.run()
+    #     total_model.get_output(0).numpy()
 
-    # 100 iteration
-    now = time.time()
-    for _ in range(iteration):
-        total_model.set_input('input_1', input_data)
-        total_model.run()
-        total_model.get_output(0).numpy()
-    running_time = time.time() - now
+    # # 100 iteration
+    # now = time.time()
+    # for _ in range(iteration):
+    #     total_model.set_input('input_1', input_data)
+    #     total_model.run()
+    #     total_model.get_output(0).numpy()
+    # running_time = time.time() - now
 
-    print("CPU(LLVM) tvm running_time", running_time)
-    del total_model
-    print("---------------------------------------------------")
+    # print("CPU(LLVM) tvm running_time", running_time)
+    # del total_model
+    # print("---------------------------------------------------")
 
 ########################################
 
@@ -145,24 +149,25 @@ image_data = preprocess_input(resized_image)
 
 ########################################
 
-# Resnet 50
-net = tf.keras.applications.ResNet50(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-# check_model(net, image_data)
-visualize_model(net)
-tf.keras.backend.clear_session()
 
-# Resnet 101
-net = tf.keras.applications.ResNet101(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-# check_model(net, image_data)
-visualize_model(net)
-tf.keras.backend.clear_session()
+# # Resnet 50
+# net = tf.keras.applications.ResNet50(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# # check_model(net, image_data)
+# visualize_model(net)
+# tf.keras.backend.clear_session()
+# 
+# # Resnet 101
+# net = tf.keras.applications.ResNet101(weights='imagenet', input_shape=(img_rows, img_cols, 3))
+# # check_model(net, image_data)
+# visualize_model(net)
+# tf.keras.backend.clear_session()
 
 # Resnet 152
 net = tf.keras.applications.ResNet152(weights='imagenet', input_shape=(img_rows, img_cols, 3))
-# check_model(net, image_data)
-visualize_model(net)
+check_model(net, image_data)
+# visualize_model(net)
 tf.keras.backend.clear_session()
-
+exit()
 # MobileNet
 net = tf.keras.applications.mobilenet.MobileNet(weights='imagenet', input_shape=(img_rows, img_cols, 3))
 # check_model(net, image_data)

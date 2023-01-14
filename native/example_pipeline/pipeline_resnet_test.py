@@ -130,7 +130,7 @@ pipe_config = pipeline_executor_build.PipelineConfig()
 mod0, mod1 = subgraphs[0], subgraphs[1]
 
 # pipe_config[mod0].target = "cuda"
-pipe_config[mod0].target = "cuda -arch=sm_75"
+pipe_config[mod0].target = "cuda -arch=sm_86"
 pipe_config[mod0].dev = tvm.device("cuda", 0)
 # # pipe_config[mod0].build_func = cutlass_build
 pipe_config[mod0].export_cc = "nvcc"
@@ -141,14 +141,14 @@ pipe_config[mod0].export_cc = "nvcc"
 # pipe_config[mod0].export_cc = "nvcc"
 
 
-pipe_config[mod1].target = "llvm"
-pipe_config[mod1].dev = tvm.device("cpu", 0)
+#pipe_config[mod1].target = "llvm"
+#pipe_config[mod1].dev = tvm.device("cpu", 0)
 
 # pipe_config[mod1].target = "cuda"
 # pipe_config[mod1].target = "cuda -arch=sm_61"
 # pipe_config[mod1].dev = tvm.device("cuda", 1)
 pipe_config[mod1].target = "cuda -arch=sm_75"
-pipe_config[mod1].dev = tvm.device("cuda", 0)
+pipe_config[mod1].dev = tvm.device("cuda", 1)
 # pipe_config[mod1].build_func = cutlass_build
 pipe_config[mod1].export_cc = "nvcc"
 
