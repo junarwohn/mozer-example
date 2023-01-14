@@ -54,9 +54,10 @@ if __name__ == "__main__":
     mid_send_conn, mid_recv_conn = Pipe()
     output_send_conn, output_recv_conn = Pipe()
     result = []
-    iter = 100000
-    p1 = Process(target=func, args=(input_recv_conn, mid_recv_conn, iter//2))
-    p2 = Process(target=func, args=(mid_send_conn, output_send_conn, iter//2))
+    src_iter = 1000
+    func_iter = 100000
+    p1 = Process(target=func, args=(input_recv_conn, mid_recv_conn, func_iter//2))
+    p2 = Process(target=func, args=(mid_send_conn, output_send_conn, func_iter//2))
     p_src = Process(target=src, args=(input_send_conn, src_iter))
     p_sink = Process(target=sink, args=(output_recv_conn,))
 

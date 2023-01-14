@@ -49,7 +49,7 @@ def work(id, start, end, result):
     for i in range(start, end):
         total += i
     result.put(total)
-    return 0
+    return
 
 if __name__ == "__main__":
     START, END = 0, 100000000

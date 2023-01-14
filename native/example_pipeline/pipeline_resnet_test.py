@@ -14,8 +14,6 @@ import tvm.testing
 # from SlicingMachine import TVMSlicer
 from mozer.slicer.SlicingMachine import TVMSlicer
 from mozer.slicer.Quantize import quantize
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 import tvm
 import tvm.relay as relay
