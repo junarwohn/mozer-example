@@ -45,30 +45,30 @@ def check_model(net, input_data):
 
     print("single {} running_time {}".format(net.name, running_time))
 
-    # model1 =  tvm.contrib.graph_executor.GraphModule(lib1["default"](dev))
+    model1 =  tvm.contrib.graph_executor.GraphModule(lib1["default"](dev))
 
 
-    # # Warm Up Phase
-    # for _ in range(warm_up_iteration):
-    #     model0.set_input('input_1', input_data)
-    #     model1.set_input('input_1', input_data)
-    #     model0.run()
-    #     model1.run()
-    #     model0.get_output(0).numpy()
-    #     model1.get_output(0).numpy()
+    # Warm Up Phase
+    for _ in range(warm_up_iteration):
+        model0.set_input('input_1', input_data)
+        model1.set_input('input_1', input_data)
+        model0.run()
+        model1.run()
+        model0.get_output(0).numpy()
+        model1.get_output(0).numpy()
 
-    # # iteration
-    # now = time.time()
-    # for _ in range(iteration):
-    #     model0.set_input('input_1', input_data)
-    #     model1.set_input('input_1', input_data)
-    #     model0.run()
-    #     model1.run()
-    #     model0.get_output(0).numpy()
-    #     model1.get_output(0).numpy()
-    # running_time = time.time() - now
+    # iteration
+    now = time.time()
+    for _ in range(iteration):
+        model0.set_input('input_1', input_data)
+        model1.set_input('input_1', input_data)
+        model0.run()
+        model1.run()
+        model0.get_output(0).numpy()
+        model1.get_output(0).numpy()
+    running_time = time.time() - now
 
-    # print("dual {} running_time {}".format(net.name, running_time))
+    print("dual {} running_time {}".format(net.name, running_time))
 
 def preprocess_input(resized_image):
     image_data = np.asarray(resized_image).astype("float32")
