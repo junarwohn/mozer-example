@@ -36,10 +36,11 @@ if __name__ == "__main__":
     p_src = Process(target=src, args=(input_send_conn, src_iter))
     p_sink = Process(target=sink, args=(output_recv_conn,))
     
-    stime = time.time()
     p1.start()
-    p_src.start()
     p_sink.start()
+    time.sleep(10)
+    stime = time.time()
+    p_src.start()
 
     p1.join()
     p_src.join()
@@ -61,11 +62,12 @@ if __name__ == "__main__":
     p_src = Process(target=src, args=(input_send_conn, src_iter))
     p_sink = Process(target=sink, args=(output_recv_conn,))
 
-    stime = time.time()
     p1.start()
     p2.start()
-    p_src.start()
     p_sink.start()
+    time.sleep(10)
+    stime = time.time()
+    p_src.start()
 
     p1.join()
     p2.join()

@@ -38,7 +38,7 @@ from tvm.contrib import graph_executor, pipeline_executor, pipeline_executor_bui
 import cv2
 
 parser = ArgumentParser()
-parser.add_argument('--partition', '-p', type=int, default=7)
+parser.add_argument('--partition', '-p', type=int, default=6)
 parser.add_argument('--batch_size', '-b', type=int, default=1)
 args = parser.parse_args()
 
