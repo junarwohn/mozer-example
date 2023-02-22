@@ -63,39 +63,39 @@ data = preprocess_input(data).transpose([0, 3, 1, 2])
 shape_dict = {"input_1": data.shape}
 mod, params = relay.frontend.from_keras(model_keras, shape_dict)
 
-target = "cuda"
-dev = tvm.device("cuda", 0)
+# target = "cuda"
+# dev = tvm.device("cuda", 0)
 
-with tvm.transform.PassContext(opt_level=4):
-    lib = relay.build(mod, target, params=params)
-total_outs = []
-iter = 100
-model = graph_executor.GraphModule(lib["default"](dev))
-for _ in range(iter):
-    model.set_input('input_1', data)
-    model.run()
-    out = model.get_output(0).numpy()
-    total_outs.append(1)
+# with tvm.transform.PassContext(opt_level=4):
+#     lib = relay.build(mod, target, params=params)
+# total_outs = []
+# iter = 100
+# model = graph_executor.GraphModule(lib["default"](dev))
+# for _ in range(iter):
+#     model.set_input('input_1', data)
+#     model.run()
+#     out = model.get_output(0).numpy()
+#     total_outs.append(1)
 
-iter = 100
-stime = time.time()
-model = graph_executor.GraphModule(lib["default"](dev))
-for _ in range(iter):
-    model.set_input('input_1', data)
-    model.run()
-    out = model.get_output(0).numpy()
-    total_outs.append(1)
-    out = np.squeeze(out.transpose([0,2,3,1]))
-    total_outs.append(1)
+# iter = 100
+# stime = time.time()
+# model = graph_executor.GraphModule(lib["default"](dev))
+# for _ in range(iter):
+#     model.set_input('input_1', data)
+#     model.run()
+#     out = model.get_output(0).numpy()
+#     total_outs.append(1)
+#     out = np.squeeze(out.transpose([0,2,3,1]))
+#     total_outs.append(1)
 
-etime = time.time()
+# etime = time.time()
 
-print(f"single time : {etime-stime}")
+# print(f"single time : {etime-stime}")
 
-original_out = out
-# original_out = []
+# original_out = out
+original_out = []
 # exit()
-del model
+# del model
 
 # visualized
 # print(out.shape)
@@ -159,16 +159,26 @@ pipe_config[mod1]["output"][0].connect(pipe_config["output"][0])
 with tvm.transform.PassContext(opt_level=4):
     pipeline_mod_factory = pipeline_executor_build.build(pipe_config)
 
-
+# config_file_name = pipeline_mod_factory.export_library("./unet_pipeline")
+# pipeline_module = pipeline_executor.PipelineModule.load_library("./unet_pipeline/config")
 
 # exit()
 # directory_path = tvm.contrib.utils.tempdir().temp_dir
 # os.makedirs(directory_path, exist_ok=True)
 # config_file_name = pipeline_mod_factory.export_library(directory_path)
 # pipeline_module = pipeline_executor.PipelineModule.load_library(config_file_name)
+
+# pipeline_module.module.pipe_config[mod0].target = "cuda -arch=sm_86"
+# pipeline_module.module.pipe_config[mod0].dev = tvm.device("cuda", 0)
+# pipeline_module.module.pipe_config[mod0].export_cc = "nvcc"
+
+# pipeline_module.module.pipe_config[mod1].target = "cuda -arch=sm_75"
+# pipeline_module.module.pipe_config[mod1].dev = tvm.device("cuda", 1)
+# pipeline_module.module.pipe_config[mod1].export_cc = "nvcc"
+
 pipeline_module = pipeline_executor.PipelineModule(pipeline_mod_factory)
 # idata = tvm.nd.array(data)
-iter = 1
+iter = 100
 # iter = 1
 total_outs = []
 after_burn = 0
@@ -176,7 +186,6 @@ for i in range(iter):
     idata = tvm.nd.array(data)
     pipeline_module.set_input("input_1", idata)
     # time.sleep(5)
-
     pipeline_module.run()
     # time.sleep(5)
     # outputs = pipeline_module.get_output(synchronize=False)
